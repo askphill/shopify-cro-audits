@@ -15,8 +15,8 @@ export function FindingCard({ finding, index }: FindingCardProps) {
     <div className="relative rounded-lg">
       <button
         onClick={() => setExpanded(!expanded)}
-        className={`w-full px-4 py-3 text-left flex items-center gap-3 rounded-lg cursor-pointer transition-colors ${
-          expanded ? "bg-ap-brownLight rounded-b-none" : "bg-ap-greyLight hover:bg-ap-brownLight"
+        className={`relative z-[1] w-full px-4 py-3 text-left flex items-center gap-3 rounded-lg cursor-pointer transition-colors ${
+          expanded ? "bg-ap-brownLight" : "bg-ap-greyLight hover:bg-ap-brownLight"
         }`}
       >
         <span className="text-lg font-bold tracking-tighter text-ap-red shrink-0">
@@ -36,7 +36,9 @@ export function FindingCard({ finding, index }: FindingCardProps) {
             <span className="text-ap-brown">{"★".repeat(5 - finding.business_impact)}</span>
           </span>
           <span
-            className="w-7 h-7 inline-flex items-center justify-center rounded-full bg-white transition-all text-black hover:opacity-50 shrink-0"
+            className={`w-7 h-7 inline-flex items-center justify-center rounded-full transition-all text-black hover:opacity-50 shrink-0 p-0.5 ${
+              expanded ? "bg-ap-greyLight" : "bg-white"
+            }`}
             style={{ transform: expanded ? 'rotate(90deg)' : 'none' }}
           >
             &#8250;
