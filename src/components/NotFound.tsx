@@ -2,7 +2,7 @@ import { Logo } from "./Logo";
 
 export function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-ap-greyLight px-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-ap-brown px-6">
       <Logo className="h-10 mb-8" />
       <h1 className="text-2xl font-bold tracking-tighter mb-2">
         Audit not found

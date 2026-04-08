@@ -12,7 +12,7 @@ export function FindingCard({ finding, index }: FindingCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="rounded-lg border border-ap-brown/20 bg-white shadow-ap-popup overflow-hidden">
+    <div className="rounded-2xl bg-white shadow-ap-popup overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full px-6 py-5 text-left flex items-start gap-4 hover:bg-ap-brownLight transition-colors cursor-pointer"

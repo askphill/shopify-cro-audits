@@ -24,40 +24,38 @@ export function ExecutiveSummary({
   )[0]?.[0];
 
   return (
-    <section className="bg-white border-b border-ap-brown/20 px-6 py-10 md:px-12">
-      <div className="mx-auto max-w-4xl">
-        <h2 className="text-2xl font-bold tracking-tighter mb-4">
-          Executive Summary
-        </h2>
-        <p className="ap-description-text text-base leading-relaxed mb-8">{summary}</p>
+    <section className="rounded-2xl bg-white p-6 md:p-8 shadow-ap-popup">
+      <h2 className="text-2xl font-bold tracking-tighter mb-4">
+        Executive Summary
+      </h2>
+      <p className="ap-description-text text-base leading-relaxed mb-8">{summary}</p>
 
-        <div className="flex flex-wrap justify-center gap-8 mb-8 bg-ap-greyLight rounded-lg px-6 py-6">
-          <LighthouseGauge
-            score={lighthouseScores.performance}
-            label="Performance"
-          />
-          <LighthouseGauge
-            score={lighthouseScores.accessibility}
-            label="Accessibility"
-          />
-          <LighthouseGauge score={lighthouseScores.seo} label="SEO" />
-          <LighthouseGauge
-            score={lighthouseScores.best_practices}
-            label="Best Practices"
-          />
-        </div>
+      <div className="flex flex-wrap justify-center gap-8 mb-8 bg-ap-brownLight rounded-2xl px-6 py-6">
+        <LighthouseGauge
+          score={lighthouseScores.performance}
+          label="Performance"
+        />
+        <LighthouseGauge
+          score={lighthouseScores.accessibility}
+          label="Accessibility"
+        />
+        <LighthouseGauge score={lighthouseScores.seo} label="SEO" />
+        <LighthouseGauge
+          score={lighthouseScores.best_practices}
+          label="Best Practices"
+        />
+      </div>
 
-        <div className="flex gap-6 text-sm ap-description-text">
+      <div className="flex gap-6 text-sm ap-description-text">
+        <span>
+          <strong className="text-black font-bold tracking-tighter">{findings.length}</strong> findings
+        </span>
+        {mostCommonTheme && (
           <span>
-            <strong className="text-black font-bold tracking-tighter">{findings.length}</strong> findings
+            Top theme:{" "}
+            <strong className="text-black font-bold tracking-tighter">{mostCommonTheme}</strong>
           </span>
-          {mostCommonTheme && (
-            <span>
-              Top theme:{" "}
-              <strong className="text-black font-bold tracking-tighter">{mostCommonTheme}</strong>
-            </span>
-          )}
-        </div>
+        )}
       </div>
     </section>
   );

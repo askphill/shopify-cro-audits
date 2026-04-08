@@ -16,12 +16,11 @@ function Stars({ count }: { count: number }) {
 
 export function ImpactTable({ findings }: ImpactTableProps) {
   return (
-    <section className="px-6 py-10 md:px-12">
-      <div className="mx-auto max-w-4xl">
-        <h2 className="text-2xl font-bold tracking-tighter mb-6">
-          Impact Summary
-        </h2>
-        <div className="overflow-x-auto rounded-lg border border-ap-brown/20 bg-white">
+    <section>
+      <h2 className="text-2xl font-bold tracking-tighter mb-4">
+        Impact Summary
+      </h2>
+      <div className="overflow-x-auto rounded-2xl bg-white shadow-ap-popup">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-ap-brown/20 bg-ap-brownLight text-left">
@@ -53,7 +52,6 @@ export function ImpactTable({ findings }: ImpactTableProps) {
             </tbody>
           </table>
         </div>
-      </div>
     </section>
   );
 }

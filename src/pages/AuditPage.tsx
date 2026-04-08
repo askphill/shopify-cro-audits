@@ -34,7 +34,7 @@ export function AuditPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ap-greyLight">
+      <div className="min-h-screen flex items-center justify-center bg-ap-brown">
         <div className="ap-description-text text-sm">Loading audit...</div>
       </div>
     );
@@ -45,20 +45,22 @@ export function AuditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-ap-greyLight">
+    <div className="min-h-screen bg-ap-brown">
       <Header
         clientName={audit.client_name}
         websiteUrl={audit.website_url}
         auditDate={audit.audit_date}
       />
-      <ExecutiveSummary
-        summary={audit.executive_summary}
-        lighthouseScores={audit.lighthouse_scores}
-        findings={audit.findings}
-      />
-      <FindingsList findings={audit.findings} />
-      <ImpactTable findings={audit.findings} />
-      <CallToAction ctaLink={audit.cta_link} />
+      <div className="mx-auto max-w-4xl px-4 md:px-6 space-y-4 pb-8">
+        <ExecutiveSummary
+          summary={audit.executive_summary}
+          lighthouseScores={audit.lighthouse_scores}
+          findings={audit.findings}
+        />
+        <FindingsList findings={audit.findings} />
+        <ImpactTable findings={audit.findings} />
+        <CallToAction ctaLink={audit.cta_link} />
+      </div>
     </div>
   );
 }
