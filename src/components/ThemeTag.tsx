@@ -1,17 +1,17 @@
 import type { FindingTheme } from "../types/audit";
 
 const themeColors: Record<FindingTheme, string> = {
-  "Checkout & Cart": "bg-blue-100 text-blue-800",
-  "Product Discovery": "bg-green-100 text-green-800",
-  "Product Page (PDP)": "bg-yellow-100 text-yellow-800",
-  "ICC & Personalization": "bg-purple-100 text-purple-800",
-  "Email & Retention": "bg-red-100 text-red-800",
-  "Conversion Optimization": "bg-orange-100 text-orange-800",
-  "Content & UX": "bg-pink-100 text-pink-800",
-  "Data & Analytics": "bg-gray-100 text-gray-800",
-  "Technical Infrastructure": "bg-stone-100 text-stone-800",
-  "AI & Automation": "bg-slate-100 text-slate-800",
-  "Customer Service": "bg-cyan-100 text-cyan-800",
+  "Checkout & Cart": "bg-ap-blueLight/50 text-ap-blueDark",
+  "Product Discovery": "bg-ap-greenLight/50 text-ap-greenDark",
+  "Product Page (PDP)": "bg-ap-brownLight text-ap-brownDark",
+  "ICC & Personalization": "bg-ap-redLight/50 text-ap-redDark",
+  "Email & Retention": "bg-ap-redLight/30 text-ap-red",
+  "Conversion Optimization": "bg-ap-greenLight/30 text-ap-green",
+  "Content & UX": "bg-ap-blueLight/30 text-ap-blue",
+  "Data & Analytics": "bg-ap-brown/20 text-ap-brownDark",
+  "Technical Infrastructure": "bg-ap-greyLight text-ap-greyDark",
+  "AI & Automation": "bg-ap-blueDark/10 text-ap-blueDark",
+  "Customer Service": "bg-ap-greenLight text-ap-greenDark",
 };
 
 interface ThemeTagProps {
@@ -19,9 +19,9 @@ interface ThemeTagProps {
 }
 
 export function ThemeTag({ theme }: ThemeTagProps) {
-  const colorClass = themeColors[theme] ?? "bg-gray-100 text-gray-800";
+  const colorClass = themeColors[theme] ?? "bg-ap-brown/20 text-ap-brownDark";
   return (
-    <span key={theme} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold tracking-tight ${colorClass}`}>
+    <span key={theme} className={`inline-flex items-center rounded-full border-none px-2.5 py-0.5 text-xs font-bold tracking-tighter ${colorClass}`}>
       {theme}
     </span>
   );

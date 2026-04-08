@@ -23,8 +23,9 @@ export function LighthouseGauge({ score, label }: LighthouseGaugeProps) {
           cy="50"
           r={radius}
           fill="none"
-          stroke="#e5e7eb"
+          stroke="#D8CCB5"
           strokeWidth="8"
+          opacity="0.3"
         />
         <circle
           data-testid="gauge-circle"
@@ -50,7 +51,7 @@ export function LighthouseGauge({ score, label }: LighthouseGaugeProps) {
           {score}
         </text>
       </svg>
-      <span className="text-xs font-medium tracking-tight text-ap-greyDark">
+      <span className="text-xs font-bold tracking-tighter text-ap-greyDark">
         {label}
       </span>
     </div>

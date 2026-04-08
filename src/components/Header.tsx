@@ -14,7 +14,7 @@ export function Header({ clientName, websiteUrl, auditDate }: HeaderProps) {
   });
 
   return (
-    <header className="border-b border-gray-200 bg-white px-6 py-8 md:px-12">
+    <header className="border-b border-ap-brown/20 bg-white px-6 py-8 md:px-12">
       <div className="mx-auto max-w-4xl">
         <Logo className="h-12 mb-6" />
         <div className="flex flex-col gap-1">
@@ -25,11 +25,11 @@ export function Header({ clientName, websiteUrl, auditDate }: HeaderProps) {
             href={websiteUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ap-blue hover:underline text-sm"
+            className="text-ap-blue hover:underline text-sm font-medium tracking-tighter"
           >
             {websiteUrl}
           </a>
-          <p className="text-sm text-ap-greyDark mt-1">
+          <p className="ap-description-text text-sm mt-1">
             {formattedDate} &middot; Prepared by Ask Phill
           </p>
         </div>

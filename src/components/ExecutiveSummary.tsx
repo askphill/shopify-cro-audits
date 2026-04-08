@@ -24,14 +24,14 @@ export function ExecutiveSummary({
   )[0]?.[0];
 
   return (
-    <section className="bg-white px-6 py-10 md:px-12">
+    <section className="bg-white border-b border-ap-brown/20 px-6 py-10 md:px-12">
       <div className="mx-auto max-w-4xl">
         <h2 className="text-2xl font-bold tracking-tighter mb-4">
           Executive Summary
         </h2>
-        <p className="text-black/70 leading-relaxed mb-8">{summary}</p>
+        <p className="ap-description-text text-base leading-relaxed mb-8">{summary}</p>
 
-        <div className="flex flex-wrap justify-center gap-8 mb-8">
+        <div className="flex flex-wrap justify-center gap-8 mb-8 bg-ap-greyLight rounded-lg px-6 py-6">
           <LighthouseGauge
             score={lighthouseScores.performance}
             label="Performance"
@@ -47,14 +47,14 @@ export function ExecutiveSummary({
           />
         </div>
 
-        <div className="flex gap-6 text-sm text-ap-greyDark">
+        <div className="flex gap-6 text-sm ap-description-text">
           <span>
-            <strong className="text-black">{findings.length}</strong> findings
+            <strong className="text-black font-bold tracking-tighter">{findings.length}</strong> findings
           </span>
           {mostCommonTheme && (
             <span>
               Top theme:{" "}
-              <strong className="text-black">{mostCommonTheme}</strong>
+              <strong className="text-black font-bold tracking-tighter">{mostCommonTheme}</strong>
             </span>
           )}
         </div>

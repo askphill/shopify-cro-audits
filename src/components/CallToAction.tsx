@@ -11,7 +11,7 @@ export function CallToAction({ ctaLink }: CallToActionProps) {
         <h2 className="text-3xl font-bold tracking-tighter mb-4">
           Ready to unlock these opportunities?
         </h2>
-        <p className="text-white/70 mb-8 max-w-lg mx-auto">
+        <p className="text-white/50 font-medium tracking-tighter mb-8 max-w-lg mx-auto">
           Let's discuss how Shopify Plus can help you convert more visitors
           into customers with the optimizations outlined in this audit.
         </p>
@@ -20,7 +20,7 @@ export function CallToAction({ ctaLink }: CallToActionProps) {
             href={bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-full bg-ap-red px-8 py-3 font-semibold text-white hover:bg-ap-redDark transition-colors tracking-tight"
+            className="inline-block rounded-full bg-ap-red px-8 py-3 font-bold text-white hover:bg-ap-redDark transition-colors tracking-tighter"
           >
             Book a call with Ask Phill
           </a>
@@ -28,7 +28,7 @@ export function CallToAction({ ctaLink }: CallToActionProps) {
             href="https://www.shopify.com/plus"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-full border border-white/30 px-8 py-3 font-semibold text-white hover:bg-white/10 transition-colors tracking-tight"
+            className="inline-block rounded-full border border-white/30 px-8 py-3 font-bold text-white hover:bg-white/10 transition-colors tracking-tighter"
           >
             Learn more about Shopify Plus
           </a>

@@ -35,7 +35,7 @@ export function AuditPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-ap-greyLight">
-        <div className="text-ap-greyDark text-sm">Loading audit...</div>
+        <div className="ap-description-text text-sm">Loading audit...</div>
       </div>
     );
   }
