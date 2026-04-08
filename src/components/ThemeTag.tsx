@@ -1,16 +1,16 @@
 import type { FindingTheme } from "../types/audit";
 
 const themeColors: Record<FindingTheme, string> = {
-  "Checkout & Cart": "bg-ap-blueLight/50 text-ap-blueDark",
-  "Product Discovery": "bg-ap-greenLight/50 text-ap-greenDark",
-  "Product Page (PDP)": "bg-ap-brownLight text-ap-brownDark",
-  "ICC & Personalization": "bg-ap-redLight/50 text-ap-redDark",
-  "Email & Retention": "bg-ap-redLight/30 text-ap-red",
-  "Conversion Optimization": "bg-ap-greenLight/30 text-ap-green",
-  "Content & UX": "bg-ap-blueLight/30 text-ap-blue",
-  "Data & Analytics": "bg-ap-brown/20 text-ap-brownDark",
-  "Technical Infrastructure": "bg-ap-greyLight text-ap-greyDark",
-  "AI & Automation": "bg-ap-blueDark/10 text-ap-blueDark",
+  "Checkout & Cart": "bg-ap-blueLight text-ap-blueDark",
+  "Product Discovery": "bg-ap-greenLight text-ap-greenDark",
+  "Product Page (PDP)": "bg-ap-brown/40 text-ap-brownDark",
+  "ICC & Personalization": "bg-ap-redLight text-ap-redDark",
+  "Email & Retention": "bg-ap-redLight/70 text-ap-redDark",
+  "Conversion Optimization": "bg-ap-greenLight/70 text-ap-greenDark",
+  "Content & UX": "bg-ap-blueLight/70 text-ap-blueDark",
+  "Data & Analytics": "bg-ap-brown/30 text-ap-brownDark",
+  "Technical Infrastructure": "bg-ap-greyDark/15 text-ap-greyDark",
+  "AI & Automation": "bg-ap-blueDark/20 text-ap-blueDark",
   "Customer Service": "bg-ap-greenLight text-ap-greenDark",
 };
 

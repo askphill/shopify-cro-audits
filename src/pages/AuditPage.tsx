@@ -6,7 +6,7 @@ import { Logo } from "../components/Logo";
 import { Header } from "../components/Header";
 import { ExecutiveSummary } from "../components/ExecutiveSummary";
 import { FindingsList } from "../components/FindingsList";
-import { ImpactTable } from "../components/ImpactTable";
+import { LighthouseAccordion } from "../components/LighthouseAccordion";
 import { CallToAction } from "../components/CallToAction";
 import { NotFound } from "../components/NotFound";
 
@@ -57,11 +57,12 @@ export function AuditPage() {
           />
           <ExecutiveSummary
             summary={audit.executive_summary}
-            lighthouseScores={audit.lighthouse_scores}
             findings={audit.findings}
           />
           <FindingsList findings={audit.findings} />
-          <ImpactTable findings={audit.findings} />
+          <div className="mt-6 space-y-2">
+            <LighthouseAccordion lighthouseScores={audit.lighthouse_scores} />
+          </div>
         </div>
         <CallToAction ctaLink={audit.cta_link} />
       </div>

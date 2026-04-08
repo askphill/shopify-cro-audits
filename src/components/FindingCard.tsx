@@ -31,7 +31,10 @@ export function FindingCard({ finding, index }: FindingCardProps) {
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <StarRating value={finding.business_impact} label="" />
+          <span className="text-ap-red hidden sm:inline">
+            {"★".repeat(finding.business_impact)}
+            <span className="text-ap-brown">{"★".repeat(5 - finding.business_impact)}</span>
+          </span>
           <span
             className="w-7 h-7 inline-flex items-center justify-center rounded-full bg-white transition-all text-black hover:opacity-50 shrink-0"
             style={{ transform: expanded ? 'rotate(90deg)' : 'none' }}
@@ -73,7 +76,11 @@ export function FindingCard({ finding, index }: FindingCardProps) {
               Learn about {finding.plus_feature} on Shopify Plus &rarr;
             </a>
 
-            <div className="flex gap-6 mt-4 pt-4 border-t border-ap-brown/10">
+            <div className="flex flex-wrap gap-6 mt-4 pt-4 border-t border-ap-brown/10">
+              <StarRating
+                value={finding.business_impact}
+                label="Business Impact"
+              />
               <StarRating
                 value={finding.user_impact}
                 label="User Impact"

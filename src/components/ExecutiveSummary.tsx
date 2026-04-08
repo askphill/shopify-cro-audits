@@ -1,15 +1,12 @@
-import type { LighthouseScores, Finding } from "../types/audit";
-import { LighthouseGauge } from "./LighthouseGauge";
+import type { Finding } from "../types/audit";
 
 interface ExecutiveSummaryProps {
   summary: string;
-  lighthouseScores: LighthouseScores;
   findings: Finding[];
 }
 
 export function ExecutiveSummary({
   summary,
-  lighthouseScores,
   findings,
 }: ExecutiveSummaryProps) {
   const topTheme = findings.reduce(
@@ -29,22 +26,6 @@ export function ExecutiveSummary({
         Executive Summary
       </h2>
       <p className="ap-description-text text-base leading-relaxed mb-6">{summary}</p>
-
-      <div className="flex flex-wrap justify-center gap-8 mb-6 bg-ap-greyLight rounded-2xl px-6 py-6">
-        <LighthouseGauge
-          score={lighthouseScores.performance}
-          label="Performance"
-        />
-        <LighthouseGauge
-          score={lighthouseScores.accessibility}
-          label="Accessibility"
-        />
-        <LighthouseGauge score={lighthouseScores.seo} label="SEO" />
-        <LighthouseGauge
-          score={lighthouseScores.best_practices}
-          label="Best Practices"
-        />
-      </div>
 
       <div className="flex gap-6 text-sm ap-description-text">
         <span>
