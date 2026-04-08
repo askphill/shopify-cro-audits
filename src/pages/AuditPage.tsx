@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { CroAudit } from "../types/audit";
-import { fetchAudit } from "../lib/supabase";
+import { fetchAudit } from "../lib/api";
 import { Header } from "../components/Header";
 import { ExecutiveSummary } from "../components/ExecutiveSummary";
 import { FindingsList } from "../components/FindingsList";
