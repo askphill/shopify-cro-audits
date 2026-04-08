@@ -16,7 +16,7 @@ export function LighthouseGauge({ score, label }: LighthouseGaugeProps) {
   const offset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div data-component="LighthouseGauge" className="flex flex-col items-center gap-1">
       <svg width="100" height="100" viewBox="0 0 100 100">
         <circle
           cx="50"

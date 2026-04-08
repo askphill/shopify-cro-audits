@@ -6,7 +6,7 @@ interface StarRatingProps {
 
 export function StarRating({ value, max = 5, label }: StarRatingProps) {
   return (
-    <div className="flex items-center gap-1.5">
+    <div data-component="StarRating" className="flex items-center gap-1.5">
       {label && (
         <span className="text-xs font-bold text-ap-greyDark tracking-tighter">
           {label}

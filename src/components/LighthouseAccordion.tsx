@@ -1,13 +1,29 @@
 import { useState } from "react";
 import type { LighthouseScores } from "../types/audit";
 import { LighthouseGauge } from "./LighthouseGauge";
+import { ExpandToggleButton } from "./ExpandToggleButton";
 
 interface LighthouseAccordionProps {
   lighthouseScores: LighthouseScores;
+  expanded?: boolean;
+  onToggle?: () => void;
 }
 
-export function LighthouseAccordion({ lighthouseScores }: LighthouseAccordionProps) {
-  const [expanded, setExpanded] = useState(false);
+export function LighthouseAccordion({
+  lighthouseScores,
+  expanded: controlledExpanded,
+  onToggle,
+}: LighthouseAccordionProps) {
+  const [internalExpanded, setInternalExpanded] = useState(false);
+  const expanded = controlledExpanded ?? internalExpanded;
+
+  const toggle = () => {
+    if (onToggle) {
+      onToggle();
+    } else {
+      setInternalExpanded(!internalExpanded);
+    }
+  };
 
   const avg = Math.round(
     (lighthouseScores.performance +
@@ -17,16 +33,28 @@ export function LighthouseAccordion({ lighthouseScores }: LighthouseAccordionPro
       4
   );
 
+  const handleToggleBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggle();
+  };
+
   return (
-    <div className="relative rounded-lg">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className={`relative z-[1] w-full px-4 py-3 text-left flex items-center gap-3 rounded-lg cursor-pointer transition-colors ${
-          expanded ? "bg-ap-brownLight" : "bg-ap-greyLight hover:bg-ap-brownLight"
+    <section data-component="LighthouseAccordion" className="relative rounded-lg">
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={toggle}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+        className={`relative z-[1] flex items-center px-4 py-3 w-full rounded-lg cursor-pointer transition-colors ${
+          expanded
+            ? "bg-ap-brownLight"
+            : "bg-ap-greyLight hover:bg-ap-brownLight"
         }`}
       >
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold tracking-tighter text-lg">
+          <h3 className="font-bold tracking-tighter text-lg leading-7">
             Lighthouse Scores
           </h3>
         </div>
@@ -34,20 +62,13 @@ export function LighthouseAccordion({ lighthouseScores }: LighthouseAccordionPro
           <span className="font-bold tracking-tighter text-sm ap-description-text">
             Avg: {avg}
           </span>
-          <span
-            className={`w-7 h-7 inline-flex items-center justify-center rounded-full transition-all text-black hover:opacity-50 shrink-0 p-0.5 ${
-              expanded ? "bg-ap-greyLight" : "bg-white"
-            }`}
-            style={{ transform: expanded ? "rotate(90deg)" : "none" }}
-          >
-            &#8250;
-          </span>
+          <ExpandToggleButton isExpanded={expanded} onToggle={handleToggleBtn} />
         </div>
-      </button>
+      </div>
 
       {expanded && (
-        <div className="px-1.5 bg-white">
-          <div className="p-4 rounded-2xl rounded-t-none bg-ap-greyLight">
+        <div className="px-1.5 relative bg-white">
+          <div className="p-4 rounded-2xl rounded-t-none overflow-hidden bg-ap-greyLight">
             <div className="flex flex-wrap justify-center gap-8">
               <LighthouseGauge
                 score={lighthouseScores.performance}
@@ -66,6 +87,6 @@ export function LighthouseAccordion({ lighthouseScores }: LighthouseAccordionPro
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }

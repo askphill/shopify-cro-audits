@@ -16,7 +16,7 @@ function Stars({ count }: { count: number }) {
 
 export function ImpactTable({ findings }: ImpactTableProps) {
   return (
-    <section className="mt-6">
+    <section data-component="ImpactTable" className="mt-6">
       <h2 className="text-2xl font-bold tracking-tighter mb-4">
         Impact Summary
       </h2>

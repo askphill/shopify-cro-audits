@@ -21,20 +21,25 @@ export function ExecutiveSummary({
   )[0]?.[0];
 
   return (
-    <section className="mb-6">
+    <section data-component="ExecutiveSummary" className="mb-6">
       <h2 className="text-2xl font-bold tracking-tighter mb-4">
         Executive Summary
       </h2>
-      <p className="ap-description-text text-base leading-relaxed mb-6">{summary}</p>
+      <p className="ap-description-text text-sm mb-6">{summary}</p>
 
       <div className="flex gap-6 text-sm ap-description-text">
         <span>
-          <strong className="text-black font-bold tracking-tighter">{findings.length}</strong> findings
+          <strong className="text-black font-bold tracking-tighter">
+            {findings.length}
+          </strong>{" "}
+          findings
         </span>
         {mostCommonTheme && (
           <span>
             Top theme:{" "}
-            <strong className="text-black font-bold tracking-tighter">{mostCommonTheme}</strong>
+            <strong className="text-black font-bold tracking-tighter">
+              {mostCommonTheme}
+            </strong>
           </span>
         )}
       </div>

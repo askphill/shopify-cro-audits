@@ -12,7 +12,7 @@ export function Header({ clientName, websiteUrl, auditDate }: HeaderProps) {
   });
 
   return (
-    <header className="mb-6">
+    <header data-component="Header" className="mb-6">
       <h1 className="text-4xl font-bold tracking-tighter">
         CRO Audit: {clientName}
       </h1>
@@ -23,7 +23,7 @@ export function Header({ clientName, websiteUrl, auditDate }: HeaderProps) {
         href={websiteUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-ap-blue hover:underline text-sm font-medium tracking-tighter mt-1 inline-block"
+        className="text-ap-red underline text-sm font-medium tracking-tighter mt-1 inline-block"
       >
         {websiteUrl}
       </a>

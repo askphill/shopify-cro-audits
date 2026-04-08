@@ -1,55 +1,46 @@
 import { useState } from "react";
 import type { Finding } from "../types/audit";
-import { ThemeTag } from "./ThemeTag";
 import { StarRating } from "./StarRating";
+import { FindingCardToggle } from "./FindingCardToggle";
 
 interface FindingCardProps {
   finding: Finding;
   index: number;
+  expanded?: boolean;
+  onToggle?: () => void;
 }
 
-export function FindingCard({ finding, index }: FindingCardProps) {
-  const [expanded, setExpanded] = useState(false);
+export function FindingCard({
+  finding,
+  index,
+  expanded: controlledExpanded,
+  onToggle,
+}: FindingCardProps) {
+  const [internalExpanded, setInternalExpanded] = useState(false);
+  const expanded = controlledExpanded ?? internalExpanded;
+
+  const toggle = () => {
+    if (onToggle) {
+      onToggle();
+    } else {
+      setInternalExpanded(!internalExpanded);
+    }
+  };
 
   return (
-    <div className="relative rounded-lg">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className={`relative z-[1] w-full px-4 py-3 text-left flex items-center gap-3 rounded-lg cursor-pointer transition-colors ${
-          expanded ? "bg-ap-brownLight" : "bg-ap-greyLight hover:bg-ap-brownLight"
-        }`}
-      >
-        <span className="text-lg font-bold tracking-tighter text-ap-red shrink-0">
-          {String(index).padStart(2, "0")}
-        </span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-bold tracking-tighter text-lg">
-              {finding.title}
-            </h3>
-            <ThemeTag theme={finding.theme} />
-          </div>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="text-ap-red hidden sm:inline">
-            {"★".repeat(finding.business_impact)}
-            <span className="text-ap-brown">{"★".repeat(5 - finding.business_impact)}</span>
-          </span>
-          <span
-            className={`w-7 h-7 inline-flex items-center justify-center rounded-full transition-all text-black hover:opacity-50 shrink-0 p-0.5 ${
-              expanded ? "bg-ap-greyLight" : "bg-white"
-            }`}
-            style={{ transform: expanded ? 'rotate(90deg)' : 'none' }}
-          >
-            &#8250;
-          </span>
-        </div>
-      </button>
+    <section data-component="FindingCard" className="relative rounded-lg">
+      <FindingCardToggle
+        title={finding.title}
+        index={index}
+        theme={finding.theme}
+        expanded={expanded}
+        onToggle={toggle}
+      />
 
       {expanded && (
-        <div className="px-1.5 bg-white">
-          <div className="p-4 rounded-2xl rounded-t-none bg-ap-greyLight">
-            <p className="ap-description-text text-base leading-relaxed mb-4">
+        <div className="px-1.5 relative bg-white">
+          <div className="p-4 rounded-2xl rounded-t-none overflow-hidden bg-ap-greyLight">
+            <p className="ap-description-text mb-4">
               {finding.issue_description}
             </p>
 
@@ -57,14 +48,16 @@ export function FindingCard({ finding, index }: FindingCardProps) {
               <img
                 src={finding.screenshot_url}
                 alt={`Screenshot: ${finding.title}`}
-                className="rounded-lg border border-ap-brown/20 mb-4 max-w-full"
+                className="rounded-md max-w-full h-auto mb-4"
               />
             )}
 
             {finding.evidence.length > 0 && (
-              <ul className="list-disc list-inside text-sm ap-description-text mb-4 space-y-1">
+              <ul className="list-disc list-inside ap-description-text text-sm mb-4 space-y-1">
                 {finding.evidence.map((e, i) => (
-                  <li key={i}>{e}</li>
+                  <li key={i} className="ml-2">
+                    {e}
+                  </li>
                 ))}
               </ul>
             )}
@@ -83,10 +76,7 @@ export function FindingCard({ finding, index }: FindingCardProps) {
                 value={finding.business_impact}
                 label="Business Impact"
               />
-              <StarRating
-                value={finding.user_impact}
-                label="User Impact"
-              />
+              <StarRating value={finding.user_impact} label="User Impact" />
               <StarRating
                 value={finding.effort_to_fix}
                 label="Effort to Fix"
@@ -95,6 +85,6 @@ export function FindingCard({ finding, index }: FindingCardProps) {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }

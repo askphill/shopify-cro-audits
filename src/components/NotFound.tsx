@@ -2,8 +2,8 @@ import { Logo } from "./Logo";
 
 export function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-ap-brown px-6">
-      <Logo className="h-10 mb-8" />
+    <div data-component="NotFound" className="min-h-screen flex flex-col items-center justify-center bg-ap-brown px-6">
+      <Logo brandLogo className="w-[8.5rem] mb-8" />
       <h1 className="text-2xl font-bold tracking-tighter mb-2">
         Audit not found
       </h1>
