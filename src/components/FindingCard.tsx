@@ -12,32 +12,39 @@ export function FindingCard({ finding, index }: FindingCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="rounded-2xl bg-white shadow-ap-popup overflow-hidden">
+    <div className="relative rounded-lg">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full px-6 py-5 text-left flex items-start gap-4 hover:bg-ap-brownLight transition-colors cursor-pointer"
+        className={`w-full px-4 py-3 text-left flex items-center gap-3 rounded-lg cursor-pointer transition-colors ${
+          expanded ? "bg-ap-brownLight rounded-b-none" : "bg-ap-greyLight hover:bg-ap-brownLight"
+        }`}
       >
-        <span className="text-2xl font-bold tracking-tighter text-ap-red shrink-0">
+        <span className="text-lg font-bold tracking-tighter text-ap-red shrink-0">
           {String(index).padStart(2, "0")}
         </span>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-1 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
             <h3 className="font-bold tracking-tighter text-lg">
               {finding.title}
             </h3>
             <ThemeTag theme={finding.theme} />
           </div>
-          <StarRating value={finding.business_impact} label="Business Impact" />
         </div>
-        <span className="text-ap-greyDark text-xl shrink-0 transition-transform" style={{ transform: expanded ? 'rotate(45deg)' : 'none' }}>
-          +
-        </span>
+        <div className="flex items-center gap-2 shrink-0">
+          <StarRating value={finding.business_impact} label="" />
+          <span
+            className="w-7 h-7 inline-flex items-center justify-center rounded-full bg-white transition-all text-black hover:opacity-50 shrink-0"
+            style={{ transform: expanded ? 'rotate(90deg)' : 'none' }}
+          >
+            &#8250;
+          </span>
+        </div>
       </button>
 
       {expanded && (
-        <div className="px-6 pb-6 pt-0 border-t border-ap-brown/10">
-          <div className="pl-12">
-            <p className="ap-description-text text-base leading-relaxed mt-4 mb-4">
+        <div className="px-1.5 bg-white">
+          <div className="p-4 rounded-2xl rounded-t-none bg-ap-greyLight">
+            <p className="ap-description-text text-base leading-relaxed mb-4">
               {finding.issue_description}
             </p>
 

@@ -24,13 +24,13 @@ export function ExecutiveSummary({
   )[0]?.[0];
 
   return (
-    <section className="rounded-2xl bg-white p-6 md:p-8 shadow-ap-popup">
+    <section className="mb-6">
       <h2 className="text-2xl font-bold tracking-tighter mb-4">
         Executive Summary
       </h2>
-      <p className="ap-description-text text-base leading-relaxed mb-8">{summary}</p>
+      <p className="ap-description-text text-base leading-relaxed mb-6">{summary}</p>
 
-      <div className="flex flex-wrap justify-center gap-8 mb-8 bg-ap-brownLight rounded-2xl px-6 py-6">
+      <div className="flex flex-wrap justify-center gap-8 mb-6 bg-ap-greyLight rounded-2xl px-6 py-6">
         <LighthouseGauge
           score={lighthouseScores.performance}
           label="Performance"

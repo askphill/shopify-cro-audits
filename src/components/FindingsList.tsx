@@ -7,9 +7,9 @@ interface FindingsListProps {
 
 export function FindingsList({ findings }: FindingsListProps) {
   return (
-    <section>
+    <section className="mt-6">
       <h2 className="text-2xl font-bold tracking-tighter mb-4">Findings</h2>
-      <div className="space-y-3">
+      <div className="space-y-2">
         {findings.map((finding, i) => (
           <FindingCard key={i} finding={finding} index={i + 1} />
         ))}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { CroAudit } from "../types/audit";
 import { fetchAudit } from "../lib/api";
+import { Logo } from "../components/Logo";
 import { Header } from "../components/Header";
 import { ExecutiveSummary } from "../components/ExecutiveSummary";
 import { FindingsList } from "../components/FindingsList";
@@ -34,7 +35,7 @@ export function AuditPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ap-brown">
+      <div className="py-8 bg-ap-brown w-screen min-h-screen flex items-center justify-center">
         <div className="ap-description-text text-sm">Loading audit...</div>
       </div>
     );
@@ -45,20 +46,23 @@ export function AuditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-ap-brown">
-      <Header
-        clientName={audit.client_name}
-        websiteUrl={audit.website_url}
-        auditDate={audit.audit_date}
-      />
-      <div className="mx-auto max-w-4xl px-4 md:px-6 space-y-4 pb-8">
-        <ExecutiveSummary
-          summary={audit.executive_summary}
-          lighthouseScores={audit.lighthouse_scores}
-          findings={audit.findings}
-        />
-        <FindingsList findings={audit.findings} />
-        <ImpactTable findings={audit.findings} />
+    <div className="py-8 bg-ap-brown w-screen min-h-screen overflow-x-hidden">
+      <div className="md:container md:max-w-4xl md:mx-auto px-4">
+        <Logo className="w-[8.5rem] mx-auto mb-6 md:mb-8" />
+        <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 mb-6 relative">
+          <Header
+            clientName={audit.client_name}
+            websiteUrl={audit.website_url}
+            auditDate={audit.audit_date}
+          />
+          <ExecutiveSummary
+            summary={audit.executive_summary}
+            lighthouseScores={audit.lighthouse_scores}
+            findings={audit.findings}
+          />
+          <FindingsList findings={audit.findings} />
+          <ImpactTable findings={audit.findings} />
+        </div>
         <CallToAction ctaLink={audit.cta_link} />
       </div>
     </div>

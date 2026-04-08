@@ -6,8 +6,8 @@ export function CallToAction({ ctaLink }: CallToActionProps) {
   const bookingUrl = ctaLink || "https://www.askphill.com/contact";
 
   return (
-    <section className="rounded-2xl bg-black text-white px-6 py-16 md:px-8 shadow-ap-popup">
-      <div className="text-center">
+    <section className="rounded-2xl md:rounded-3xl bg-black text-white p-4 md:p-6">
+      <div className="text-center py-8">
         <h2 className="text-3xl font-bold tracking-tighter mb-4">
           Ready to unlock these opportunities?
         </h2>
