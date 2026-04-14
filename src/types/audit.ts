@@ -5,6 +5,20 @@ export interface LighthouseScores {
   best_practices: number;
 }
 
+export interface CoreWebVitalMetrics {
+  lcp_ms: number;
+  inp_ms: number;
+  cls: number;
+  fcp_ms: number;
+  ttfb_ms: number;
+  tbt_ms: number;
+}
+
+export interface CoreWebVitals {
+  homepage: CoreWebVitalMetrics;
+  pdp: CoreWebVitalMetrics;
+}
+
 export interface TechStack {
   theme: string;
   apps: string[];
@@ -45,9 +59,11 @@ export interface CroAudit {
   website_url: string;
   audit_date: string;
   lighthouse_scores: LighthouseScores;
+  core_web_vitals?: CoreWebVitals;
   tech_stack: TechStack;
   findings: Finding[];
   executive_summary: string;
+  logo_url?: string;
   cta_link?: string;
   created_at: string;
 }

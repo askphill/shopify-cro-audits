@@ -102,6 +102,7 @@ export function AuditPage() {
           <div className="mt-6 space-y-2">
             <LighthouseAccordion
               lighthouseScores={audit.lighthouse_scores}
+              coreWebVitals={audit.core_web_vitals}
               expanded={lighthouseExpanded}
               onToggle={() => setLighthouseExpanded(!lighthouseExpanded)}
             />

@@ -47,7 +47,11 @@ export async function fetchAuditFromNotion(
   }
 
   // Fetch page body blocks to find JSON code block
-  let bodyData: { findings: CroAudit["findings"]; tech_stack: { apps: string[]; payment_providers: string[]; analytics: string[] } };
+  let bodyData: {
+    findings: CroAudit["findings"];
+    tech_stack: { apps: string[]; payment_providers: string[]; analytics: string[] };
+    core_web_vitals?: CroAudit["core_web_vitals"];
+  };
   try {
     const blocks = await notion.blocks.children.list({ block_id: pageId });
     const codeBlock = (blocks.results as NotionBlock[]).find(
@@ -60,12 +64,15 @@ export async function fetchAuditFromNotion(
     return null;
   }
 
+  const logoUrl = (props["Logo URL"] as { url?: string })?.url;
+
   return {
     id: page.id,
     client_name: getPlainText(props["Client Name"] as { title: Array<{ plain_text: string }> }),
     website_url: (props["Website URL"] as { url: string }).url ?? "",
     audit_date: (props["Audit Date"] as { date: { start: string } }).date?.start ?? "",
     executive_summary: getPlainText(props["Executive Summary"] as { rich_text: Array<{ plain_text: string }> }),
+    logo_url: logoUrl || undefined,
     cta_link: (props["CTA Link"] as { url?: string }).url,
     lighthouse_scores: {
       performance: (props["Performance"] as { number: number }).number ?? 0,
@@ -73,6 +80,7 @@ export async function fetchAuditFromNotion(
       seo: (props["SEO"] as { number: number }).number ?? 0,
       best_practices: (props["Best Practices"] as { number: number }).number ?? 0,
     },
+    core_web_vitals: bodyData.core_web_vitals,
     tech_stack: {
       theme: getPlainText(props["Theme Name"] as { rich_text: Array<{ plain_text: string }> }),
       checkout_type: getPlainText(props["Checkout Type"] as { rich_text: Array<{ plain_text: string }> }),

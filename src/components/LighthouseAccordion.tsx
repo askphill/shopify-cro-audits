@@ -1,16 +1,19 @@
 import { useState } from "react";
-import type { LighthouseScores } from "../types/audit";
+import type { LighthouseScores, CoreWebVitals } from "../types/audit";
 import { LighthouseGauge } from "./LighthouseGauge";
+import { CoreWebVitalsTable } from "./CoreWebVitalsTable";
 import { ExpandToggleButton } from "./ExpandToggleButton";
 
 interface LighthouseAccordionProps {
   lighthouseScores: LighthouseScores;
+  coreWebVitals?: CoreWebVitals;
   expanded?: boolean;
   onToggle?: () => void;
 }
 
 export function LighthouseAccordion({
   lighthouseScores,
+  coreWebVitals,
   expanded: controlledExpanded,
   onToggle,
 }: LighthouseAccordionProps) {
@@ -84,6 +87,11 @@ export function LighthouseAccordion({
                 label="Best Practices"
               />
             </div>
+            {coreWebVitals && (
+              <div className="mt-5 pt-5 border-t border-ap-brown/15">
+                <CoreWebVitalsTable coreWebVitals={coreWebVitals} />
+              </div>
+            )}
           </div>
         </div>
       )}
