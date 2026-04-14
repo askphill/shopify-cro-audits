@@ -76,7 +76,7 @@ export function AuditPage() {
 
   return (
     <div className="py-8 bg-ap-brown w-screen min-h-screen overflow-x-hidden">
-      <div className="md:container md:max-w-4xl md:mx-auto px-4">
+      <div className="md:container md:max-w-5xl md:mx-auto px-4">
         <Logo brandLogo className="w-[8.5rem] mx-auto mb-6 md:mb-8" />
         <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 mb-6 relative">
           <div className="hidden md:block absolute left-6 top-0 bg-ap-brownLight pt-2 pb-1.5 pr-3 pl-1.5 -translate-y-full rounded-t-xl">
