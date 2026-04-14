@@ -13,13 +13,16 @@ vi.mock("@notionhq/client", () => ({
           list: vi.fn(),
         },
       },
+      databases: {
+        query: vi.fn(),
+      },
     };
   }),
 }));
 
 // Must import after mock setup
 const { Client } = await import("@notionhq/client");
-const { fetchAuditFromNotion } = await import("../../server/notion");
+const { fetchAudit } = await import("../../server/notion");
 
 function getNotionClient() {
   return (Client as unknown as ReturnType<typeof vi.fn>).mock.results[0]?.value;
@@ -89,13 +92,14 @@ const mockBlocksResponse = {
   ],
 };
 
-describe("fetchAuditFromNotion", () => {
+describe("fetchAudit", () => {
   beforeEach(() => {
     // Reset individual method mocks without clearing the constructor mock.results
     const client = getNotionClient();
     if (client) {
       client.pages.retrieve.mockReset();
       client.blocks.children.list.mockReset();
+      client.databases.query.mockReset();
     }
   });
 
@@ -104,7 +108,7 @@ describe("fetchAuditFromNotion", () => {
     client.pages.retrieve.mockResolvedValue(mockPageProperties);
     client.blocks.children.list.mockResolvedValue(mockBlocksResponse);
 
-    const result = await fetchAuditFromNotion(MOCK_PAGE_ID);
+    const result = await fetchAudit(MOCK_PAGE_ID);
 
     expect(result).not.toBeNull();
     const audit = result as CroAudit;
@@ -143,7 +147,7 @@ describe("fetchAuditFromNotion", () => {
     };
     client.pages.retrieve.mockResolvedValue(unpublished);
 
-    const result = await fetchAuditFromNotion(MOCK_PAGE_ID);
+    const result = await fetchAudit(MOCK_PAGE_ID);
     expect(result).toBeNull();
   });
 
@@ -151,7 +155,7 @@ describe("fetchAuditFromNotion", () => {
     const client = getNotionClient();
     client.pages.retrieve.mockRejectedValue({ status: 404 });
 
-    const result = await fetchAuditFromNotion(MOCK_PAGE_ID);
+    const result = await fetchAudit(MOCK_PAGE_ID);
     expect(result).toBeNull();
   });
 
@@ -160,7 +164,31 @@ describe("fetchAuditFromNotion", () => {
     client.pages.retrieve.mockResolvedValue(mockPageProperties);
     client.blocks.children.list.mockResolvedValue({ results: [] });
 
-    const result = await fetchAuditFromNotion(MOCK_PAGE_ID);
+    const result = await fetchAudit(MOCK_PAGE_ID);
+    expect(result).toBeNull();
+  });
+
+  it("resolves a slug to a page via database query", async () => {
+    const client = getNotionClient();
+    client.databases.query.mockResolvedValue({ results: [mockPageProperties] });
+    client.blocks.children.list.mockResolvedValue(mockBlocksResponse);
+
+    const result = await fetchAudit("braadbaas");
+
+    expect(client.databases.query).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filter: { property: "Slug", rich_text: { equals: "braadbaas" } },
+      })
+    );
+    expect(result).not.toBeNull();
+    expect((result as CroAudit).client_name).toBe("Braadbaas");
+  });
+
+  it("returns null when slug matches no pages", async () => {
+    const client = getNotionClient();
+    client.databases.query.mockResolvedValue({ results: [] });
+
+    const result = await fetchAudit("nonexistent-store");
     expect(result).toBeNull();
   });
 });

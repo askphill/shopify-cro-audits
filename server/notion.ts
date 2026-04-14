@@ -26,11 +26,36 @@ interface NotionBlock {
 }
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const DATABASE_ID = process.env.NOTION_DATABASE_ID ?? "3ce32b72e4f5440199bd005ecc3fa762";
 
-export async function fetchAuditFromNotion(
-  pageId: string
-): Promise<CroAudit | null> {
+const UUID_RE = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
 
+export async function fetchAudit(idOrSlug: string): Promise<CroAudit | null> {
+  if (UUID_RE.test(idOrSlug)) {
+    return fetchAuditByPageId(idOrSlug);
+  }
+  return fetchAuditBySlug(idOrSlug);
+}
+
+async function fetchAuditBySlug(slug: string): Promise<CroAudit | null> {
+  try {
+    const response = await notion.databases.query({
+      database_id: DATABASE_ID,
+      filter: {
+        property: "Slug",
+        rich_text: { equals: slug },
+      },
+      page_size: 1,
+    });
+    if (response.results.length === 0) return null;
+    const page = response.results[0] as unknown as NotionPage;
+    return buildAudit(page);
+  } catch {
+    return null;
+  }
+}
+
+async function fetchAuditByPageId(pageId: string): Promise<CroAudit | null> {
   let page: NotionPage;
   try {
     page = (await notion.pages.retrieve({ page_id: pageId })) as unknown as NotionPage;
@@ -38,6 +63,10 @@ export async function fetchAuditFromNotion(
     return null;
   }
 
+  return buildAudit(page);
+}
+
+async function buildAudit(page: NotionPage): Promise<CroAudit | null> {
   const props = page.properties as Record<string, Record<string, unknown>>;
 
   // Gate on Published status
@@ -53,7 +82,7 @@ export async function fetchAuditFromNotion(
     core_web_vitals?: CroAudit["core_web_vitals"];
   };
   try {
-    const blocks = await notion.blocks.children.list({ block_id: pageId });
+    const blocks = await notion.blocks.children.list({ block_id: page.id });
     const codeBlock = (blocks.results as NotionBlock[]).find(
       (b) => b.type === "code"
     );

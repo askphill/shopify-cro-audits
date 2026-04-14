@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { fetchAuditFromNotion } from "./notion.js";
+import { fetchAudit } from "./notion.js";
 import type { CroAudit } from "../src/types/audit.js";
 
 const app = express();
@@ -35,7 +35,7 @@ app.get("/api/audit/:id", async (req, res) => {
   }
 
   try {
-    const audit = await fetchAuditFromNotion(id);
+    const audit = await fetchAudit(id);
     if (!audit) {
       res.status(404).json({ error: "Audit not found" });
       return;
