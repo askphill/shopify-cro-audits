@@ -27,13 +27,21 @@ export function ExecutiveSummary({
       </h2>
       <p className="ap-description-text text-sm mb-6">{summary}</p>
 
-      <div className="flex gap-6 text-sm ap-description-text">
+      <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm ap-description-text">
         <span>
           <strong className="text-black font-bold tracking-tighter">
             {findings.length}
           </strong>{" "}
           findings
         </span>
+        {findings.length > 0 && (
+          <span>
+            <strong className="text-black font-bold tracking-tighter">
+              {Math.min(3, findings.length)}
+            </strong>{" "}
+            quick wins
+          </span>
+        )}
         {mostCommonTheme && (
           <span>
             Top theme:{" "}

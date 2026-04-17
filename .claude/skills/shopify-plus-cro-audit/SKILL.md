@@ -1,6 +1,6 @@
 ---
 name: shopify-plus-cro-audit
-description: External CRO audit for Shopify merchants not yet on Plus, as part of the Shopify Plus sales partnership. Scrapes the live site, runs Lighthouse, detects tech stack, and produces 5-7 findings tied to Plus-exclusive features. Outputs to the Notion CRO Audit Reports database (which powers the branded web app). Trigger when the user says "Plus CRO audit", "Shopify Plus audit", "partnership CRO audit", "audit [URL] for Plus", or mentions auditing a store for the Shopify sales partnership.
+description: External CRO audit for Shopify merchants. Scrapes the live site, runs Lighthouse, detects tech stack, and produces 10 findings (first 3 are quick wins). Shopify Plus features are called out where genuinely relevant but the audit is not Plus-gated. Outputs to the Notion CRO Audit Reports database (which powers the branded web app). Trigger when the user says "CRO audit", "Plus CRO audit", "Shopify Plus audit", "partnership CRO audit", "audit [URL]", or mentions auditing a Shopify store.
 ---
 
 # Shopify Plus CRO Audit
@@ -14,8 +14,19 @@ Ask Phill partners with Shopify's EMEA sales team to accelerate Plus adoption. S
 **Key constraints:**
 - No access to admin, GA4, Clarity, or any internal merchant data
 - All data collection is external (browsing, Lighthouse, DOM inspection)
-- Produce 5-7 findings, each naturally tied to a Plus feature
+- Produce **10 findings**, ordered so the **first 3 are "quick wins"**
+- Plus features are called out where they genuinely solve a problem, but not every finding needs a Plus tie-in
 - Output is a near-complete draft for Ben to review before sharing
+
+### Quick wins (first 3 findings)
+
+The first three findings must be **quick wins**: issues the merchant could ship within hours-to-days using their existing stack. Characteristics:
+- Effort to fix ≤ 2/5
+- Business impact ≥ 3/5
+- No Plus upgrade required, no theme rewrite, no new app subscription
+- Examples: copy tweaks, adding a trust badge, enabling native lazy-loading, fixing a broken redirect, adding a missing meta tag, reordering above-the-fold content, enabling the cart drawer that's already in the theme
+
+The remaining 7 findings are larger opportunities — anything from a theme section rebuild to a Plus migration. Order the 7 roughly by (business_impact × user_impact) ÷ effort_to_fix.
 
 ## Allowed Tools
 
@@ -61,11 +72,9 @@ CRO issues to look for:
 
 #### 1b: Lighthouse Audit
 
-Run Lighthouse on homepage and one PDP:
-- Performance score (LCP, FID, CLS, TTFB)
-- Accessibility score
-- SEO score
-- Best Practices score
+Run Lighthouse on homepage and one PDP, plus a Chrome DevTools performance trace on each:
+- Performance, Accessibility, SEO, Best Practices scores (0-100)
+- **Core Web Vitals (from the perf trace)** for both homepage and PDP: LCP (ms), CLS, INP (ms), FCP (ms), TTFB (ms), TBT (ms). Prefer CrUX field p75 data when available; fall back to lab values. Record whichever the trace reports — the frontend renders an em-dash for any metric that's missing.
 
 #### 1c: Tech Stack Detection
 
@@ -81,13 +90,13 @@ Use `evaluate_script` in Chrome DevTools or parse the page source via WebFetch.
 
 ### Phase 2: Analysis
 
-Map observations into 5-7 findings. Each finding must:
+Map observations into **10 findings**, with the **first 3 being quick wins** (see Quick wins section above). Each finding must:
 
 1. Be categorized by **Theme**: Checkout & Cart, Product Discovery, Product Page (PDP), ICC & Personalization, Conversion Optimization, Content & UX, Technical Infrastructure, Data & Analytics
 
 2. Have **impact and effort scores** (1-5 each): Business Impact, User Impact, Effort to Fix
 
-3. **Naturally reference the Plus feature** that addresses it (woven into the description, not a separate section), with a link to Shopify documentation
+3. **Reference a Plus feature only when it genuinely solves the problem**, woven into the description (not a separate section), with a link to Shopify documentation. Quick wins should NOT reference Plus (by definition they're doable without it). For the remaining 7, aim for 3-5 to have a strong Plus tie-in when the merchant is a Plus candidate.
 
 4. Include **evidence**: screenshots, Lighthouse metrics, specific observations
 
@@ -138,7 +147,7 @@ Create a page in the **CRO Audit Reports** database (ID: `3ce32b72e4f5440199bd00
 - Best Practices: Lighthouse best practices score (0-100)
 - Theme Name: detected Shopify theme
 - Checkout Type: e.g. "Standard", "Shopify Plus"
-- Finding Count: number of findings (5-7)
+- Finding Count: number of findings (should be 10)
 - Status: "Draft" (Ben will change to "Published" after review)
 
 **Page body:** Add a single JSON code block containing the nested data:
@@ -163,11 +172,25 @@ Create a page in the **CRO Audit Reports** database (ID: `3ce32b72e4f5440199bd00
     "apps": ["Klaviyo", "Yotpo"],
     "payment_providers": ["Shopify Payments", "PayPal"],
     "analytics": ["GA4", "Meta Pixel"]
+  },
+  "core_web_vitals": {
+    "homepage": {
+      "lcp_ms": 1737,
+      "inp_ms": 94,
+      "cls": 0,
+      "fcp_ms": 1200,
+      "ttfb_ms": 639,
+      "tbt_ms": 350
+    },
+    "pdp": {
+      "lcp_ms": 2400,
+      "cls": 0
+    }
   }
 }
 ```
 
-The `findings` array must match the `Finding` TypeScript interface. Each finding needs all required fields. The `screenshot_url` field can be empty if no screenshot is available for that specific finding.
+The `findings` array must contain **exactly 10 findings in order**, the first 3 being quick wins. Each finding must match the `Finding` TypeScript interface and include all required fields. The `screenshot_url` field can be empty if no screenshot is available for that finding. `core_web_vitals` is optional but strongly preferred; include every metric the perf trace reports for each of `homepage` and `pdp`, and omit any the trace doesn't produce — the frontend renders an em-dash for missing values.
 
 #### 3b: Notion — Shopify CRO Audits Project Tracker
 
