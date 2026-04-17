@@ -13,7 +13,7 @@ vi.mock("@notionhq/client", () => ({
           list: vi.fn(),
         },
       },
-      databases: {
+      dataSources: {
         query: vi.fn(),
       },
     };
@@ -99,7 +99,7 @@ describe("fetchAudit", () => {
     if (client) {
       client.pages.retrieve.mockReset();
       client.blocks.children.list.mockReset();
-      client.databases.query.mockReset();
+      client.dataSources.query.mockReset();
     }
   });
 
@@ -170,12 +170,12 @@ describe("fetchAudit", () => {
 
   it("resolves a slug to a page via database query", async () => {
     const client = getNotionClient();
-    client.databases.query.mockResolvedValue({ results: [mockPageProperties] });
+    client.dataSources.query.mockResolvedValue({ results: [mockPageProperties] });
     client.blocks.children.list.mockResolvedValue(mockBlocksResponse);
 
     const result = await fetchAudit("braadbaas");
 
-    expect(client.databases.query).toHaveBeenCalledWith(
+    expect(client.dataSources.query).toHaveBeenCalledWith(
       expect.objectContaining({
         filter: { property: "Slug", rich_text: { equals: "braadbaas" } },
       })
@@ -186,7 +186,7 @@ describe("fetchAudit", () => {
 
   it("returns null when slug matches no pages", async () => {
     const client = getNotionClient();
-    client.databases.query.mockResolvedValue({ results: [] });
+    client.dataSources.query.mockResolvedValue({ results: [] });
 
     const result = await fetchAudit("nonexistent-store");
     expect(result).toBeNull();

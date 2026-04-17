@@ -26,7 +26,8 @@ interface NotionBlock {
 }
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-const DATABASE_ID = process.env.NOTION_DATABASE_ID ?? "3ce32b72e4f5440199bd005ecc3fa762";
+const DATA_SOURCE_ID =
+  process.env.NOTION_DATA_SOURCE_ID ?? "0abd352f-02f1-48c7-95c3-3efb33e237e9";
 
 const UUID_RE = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
 
@@ -39,17 +40,16 @@ export async function fetchAudit(idOrSlug: string): Promise<CroAudit | null> {
 
 async function fetchAuditBySlug(slug: string): Promise<CroAudit | null> {
   try {
-    const response = await notion.databases.query({
-      database_id: DATABASE_ID,
+    const response = (await notion.dataSources.query({
+      data_source_id: DATA_SOURCE_ID,
       filter: {
         property: "Slug",
         rich_text: { equals: slug },
       },
       page_size: 1,
-    });
+    })) as { results: Array<NotionPage> };
     if (response.results.length === 0) return null;
-    const page = response.results[0] as unknown as NotionPage;
-    return buildAudit(page);
+    return buildAudit(response.results[0]);
   } catch {
     return null;
   }
