@@ -75,6 +75,15 @@ export function CoreWebVitalsTable({ coreWebVitals }: CoreWebVitalsTableProps) {
                 </td>
                 {pages.map((page) => {
                   const value = page.data[metric.key];
+                  if (value === undefined || value === null) {
+                    return (
+                      <td key={page.label} className="text-center py-2 px-2">
+                        <span className="inline-block text-xs font-bold tracking-tighter text-ap-greyDark/60">
+                          —
+                        </span>
+                      </td>
+                    );
+                  }
                   const rating = getRating(value, metric);
                   return (
                     <td key={page.label} className="text-center py-2 px-2">

@@ -62,15 +62,6 @@ export function FindingCard({
               </ul>
             )}
 
-            <a
-              href={finding.plus_feature_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full bg-ap-greenLight/50 px-4 py-1.5 text-sm font-bold tracking-tighter text-ap-greenDark hover:bg-ap-greenLight transition-colors"
-            >
-              Learn about {finding.plus_feature} on Shopify Plus &rarr;
-            </a>
-
             <div className="flex flex-wrap gap-6 mt-4 pt-4 border-t border-ap-brown/10">
               <StarRating
                 value={finding.business_impact}

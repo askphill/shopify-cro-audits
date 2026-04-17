@@ -21,7 +21,7 @@ interface ThemeTagProps {
 export function ThemeTag({ theme }: ThemeTagProps) {
   const colorClass = themeColors[theme] ?? "bg-ap-brown/20 text-ap-brownDark";
   return (
-    <span data-component="ThemeTag" key={theme} className={`inline-flex items-center rounded-full border-none px-2.5 py-0.5 text-xs font-bold tracking-tighter ${colorClass}`}>
+    <span data-component="ThemeTag" key={theme} className={`inline-flex items-center whitespace-nowrap rounded-full border-none px-2.5 py-0.5 text-xs font-bold tracking-tighter ${colorClass}`}>
       {theme}
     </span>
   );

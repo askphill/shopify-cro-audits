@@ -58,7 +58,7 @@ export function LighthouseAccordion({
       >
         <div className="flex-1 min-w-0">
           <h3 className="font-bold tracking-tighter text-lg leading-7">
-            Lighthouse Scores
+            Core Web Vitals
           </h3>
         </div>
         <div className="flex items-center gap-2 shrink-0">

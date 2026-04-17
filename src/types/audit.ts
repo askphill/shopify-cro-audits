@@ -6,12 +6,12 @@ export interface LighthouseScores {
 }
 
 export interface CoreWebVitalMetrics {
-  lcp_ms: number;
-  inp_ms: number;
-  cls: number;
-  fcp_ms: number;
-  ttfb_ms: number;
-  tbt_ms: number;
+  lcp_ms?: number;
+  inp_ms?: number;
+  cls?: number;
+  fcp_ms?: number;
+  ttfb_ms?: number;
+  tbt_ms?: number;
 }
 
 export interface CoreWebVitals {
