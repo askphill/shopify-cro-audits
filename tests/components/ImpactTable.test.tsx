@@ -10,8 +10,7 @@ const mockFindings: Finding[] = [
     business_impact: 5,
     user_impact: 4,
     effort_to_fix: 2,
-    plus_feature: "Checkout Extensibility",
-    plus_feature_link: "https://example.com",
+    recommendation: "Upgrade checkout flow",
     evidence: [],
   },
   {
