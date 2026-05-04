@@ -95,12 +95,12 @@ export function AuditPage() {
             summary={audit.executive_summary}
             findings={audit.findings}
           />
+          <BugsSection bugs={audit.bugs} />
           <FindingsList
             findings={audit.findings}
             expandedIndices={expandedFindings}
             onToggle={toggleFinding}
           />
-          <BugsSection bugs={audit.bugs} />
           <div className="mt-6 space-y-2">
             <LighthouseAccordion
               lighthouseScores={audit.lighthouse_scores}
