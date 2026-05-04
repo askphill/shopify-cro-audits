@@ -6,6 +6,7 @@ import { Logo } from "../components/Logo";
 import { Header } from "../components/Header";
 import { ExecutiveSummary } from "../components/ExecutiveSummary";
 import { FindingsList } from "../components/FindingsList";
+import { BugsSection } from "../components/BugsSection";
 import { LighthouseAccordion } from "../components/LighthouseAccordion";
 import { CallToAction } from "../components/CallToAction";
 import { NotFound } from "../components/NotFound";
@@ -99,6 +100,7 @@ export function AuditPage() {
             expandedIndices={expandedFindings}
             onToggle={toggleFinding}
           />
+          <BugsSection bugs={audit.bugs} />
           <div className="mt-6 space-y-2">
             <LighthouseAccordion
               lighthouseScores={audit.lighthouse_scores}

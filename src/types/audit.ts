@@ -53,6 +53,30 @@ export interface Finding {
   evidence: string[];
 }
 
+export type BugSeverity = "critical" | "high" | "low";
+
+export type BugCategory =
+  | "JavaScript Error"
+  | "Broken Link"
+  | "Broken Image"
+  | "Layout / Responsive"
+  | "Failing Interaction"
+  | "SEO Tag"
+  | "Structured Data"
+  | "Accessibility"
+  | "Security / Mixed Content"
+  | "Redirect";
+
+export interface Bug {
+  title: string;
+  category: BugCategory;
+  severity: BugSeverity;
+  location: string;
+  evidence: string;
+  quick_fix: string;
+  screenshot_url?: string;
+}
+
 export interface CroAudit {
   id: string;
   client_name: string;
@@ -62,6 +86,7 @@ export interface CroAudit {
   core_web_vitals?: CoreWebVitals;
   tech_stack: TechStack;
   findings: Finding[];
+  bugs: Bug[];
   executive_summary: string;
   logo_url?: string;
   cta_link?: string;

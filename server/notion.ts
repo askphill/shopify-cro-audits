@@ -78,6 +78,7 @@ async function buildAudit(page: NotionPage): Promise<CroAudit | null> {
   // Fetch page body blocks to find JSON code block
   let bodyData: {
     findings: CroAudit["findings"];
+    bugs?: CroAudit["bugs"];
     tech_stack: { apps: string[]; payment_providers: string[]; analytics: string[] };
     core_web_vitals?: CroAudit["core_web_vitals"];
   };
@@ -118,6 +119,7 @@ async function buildAudit(page: NotionPage): Promise<CroAudit | null> {
       analytics: bodyData.tech_stack.analytics,
     },
     findings: bodyData.findings,
+    bugs: bodyData.bugs ?? [],
     created_at: page.created_time,
   };
 }

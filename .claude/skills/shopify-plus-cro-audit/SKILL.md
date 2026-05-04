@@ -88,6 +88,33 @@ Inspect DOM and scripts to detect:
 
 Use `evaluate_script` in Chrome DevTools or parse the page source via WebFetch.
 
+#### 1d: Bug Hunt
+
+Run a structured pass for **technical bugs** on the same 5 key pages already visited (homepage, top PDP, top collection, cart, search). A Bug is something *objectively broken* — a developer would fix it in a small PR without product sign-off. Distinct from a Finding (which is a CRO opportunity).
+
+For each page, run these checks:
+
+- **JS console errors**: After navigating, call `list_console_messages` (Chrome DevTools MCP) — flag any `error`-level message.
+- **Broken links**: Use `evaluate_script` to collect all in-domain `<a href>` values, then `fetch(url, { method: "HEAD" })` each. Flag any 4xx/5xx.
+- **Broken images**: Iterate `document.querySelectorAll("img")`. Flag any with no `src`, with a `src` returning 4xx, or `<img>` on conversion-critical surfaces (PDP gallery, hero, featured products) missing `alt`.
+- **Mobile horizontal scroll**: Resize to 390×844 and check `document.documentElement.scrollWidth > window.innerWidth`. If true, that's a Layout / Responsive bug.
+- **Head sanity**: Count `<title>` (must be exactly 1), check `<link rel="canonical">` presence and that it points to a non-querystring URL, check `<meta name="viewport">` exists, count H1s in `<body>` (must be exactly 1).
+- **Structured data**: Inspect `<script type="application/ld+json">` blocks; flag invalid JSON or missing required fields on Product / Organization schema.
+- **Mixed content / staging URL leaks**: Scan page source via `WebFetch` for `http://` references on a `https://` page, and for `localhost`, `staging.`, or `*.myshopify.com` (when the live domain differs).
+- **Redirect chains**: For homepage, top PDP, and top collection, follow redirects with `fetch` and count hops. Flag chains of 3+.
+
+For each bug found, record:
+- `title`: short, human ("Cart drawer 'Checkout' button silently fails on mobile")
+- `category`: one of `JavaScript Error`, `Broken Link`, `Broken Image`, `Layout / Responsive`, `Failing Interaction`, `SEO Tag`, `Structured Data`, `Accessibility`, `Security / Mixed Content`, `Redirect`
+- `severity`: `critical` (blocks/breaks conversion: broken ATC, broken Checkout link, mixed-content blocks), `high` (visibly broken or measurably impairs conversion: 404 on a CTA, mobile button cut off, missing canonical on key templates), `low` (cosmetic / minor SEO: missing alt on near-decorative image, redirect chain)
+- `location`: free text ("/products/classic-kit on mobile viewport")
+- `evidence`: single string (the console message, HTTP status, selector, etc.)
+- `quick_fix`: 1-2 sentences, actionable; not a PR-sized diff
+
+**Dedup rule**: A given issue lives in exactly one section. If it passes the bug test (a dev would fix it without product sign-off), record it as a Bug — even if its conversion impact is finding-sized. Do not also create a Finding for it. Conversion-blocking Critical bugs should be **name-checked in the Executive Summary** so urgency surfaces without duplicating the item into Findings.
+
+There is no fixed bug count — list everything you find. The frontend caps low-severity bugs at 5 visible automatically.
+
 ### Phase 2: Analysis
 
 Map observations into **10 findings**, with the **first 3 being quick wins** (see Quick wins section above). Each finding must:
@@ -168,6 +195,24 @@ Create a page in the **CRO Audit Reports** database (ID: `3ce32b72e4f5440199bd00
       "evidence": ["Evidence point 1", "Evidence point 2"]
     }
   ],
+  "bugs": [
+    {
+      "title": "Add-to-cart silently fails on mobile PDP",
+      "category": "JavaScript Error",
+      "severity": "critical",
+      "location": "/products/classic-kit on mobile viewport (390x844)",
+      "evidence": "Uncaught TypeError: addToCart is not a function (cart.js:42)",
+      "quick_fix": "Restore the missing addToCart handler binding in cart.js — the click listener attaches to a stale reference."
+    },
+    {
+      "title": "Missing canonical tag on collection pages",
+      "category": "SEO Tag",
+      "severity": "high",
+      "location": "/collections/all and /collections/spring-nails",
+      "evidence": "No <link rel=\"canonical\"> in <head>",
+      "quick_fix": "Add canonical tag pointing to the bare collection URL (no ?sort= query param) in theme.liquid."
+    }
+  ],
   "tech_stack": {
     "apps": ["Klaviyo", "Yotpo"],
     "payment_providers": ["Shopify Payments", "PayPal"],
@@ -191,6 +236,8 @@ Create a page in the **CRO Audit Reports** database (ID: `3ce32b72e4f5440199bd00
 ```
 
 The `findings` array must contain **exactly 10 findings in order**, the first 3 being quick wins. Each finding must match the `Finding` TypeScript interface and include all required fields. The `screenshot_url` field can be empty if no screenshot is available for that finding. `core_web_vitals` is optional but strongly preferred; include every metric the perf trace reports for each of `homepage` and `pdp`, and omit any the trace doesn't produce — the frontend renders an em-dash for missing values.
+
+The `bugs` array contains all technical defects found during Phase 1d. There is no fixed count: emit every bug uncovered by the structured pass. Each bug must include `title`, `category`, `severity` (`critical` / `high` / `low`), `location`, `evidence`, and `quick_fix`. Omit the `bugs` field entirely (or pass an empty array) if no bugs were found — the frontend hides the section. The frontend automatically caps low-severity bugs at 5 visible with an overflow line; do not pre-truncate. **If the audit produces a Critical bug, name-check it in the Executive Summary** so the urgency surfaces above the fold without duplicating the item into Findings.
 
 #### 3b: Notion — Shopify CRO Audits Project Tracker
 

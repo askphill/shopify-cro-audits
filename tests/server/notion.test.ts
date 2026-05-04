@@ -73,6 +73,16 @@ const mockBodyJson = {
       evidence: ["No upsell widget found"],
     },
   ],
+  bugs: [
+    {
+      title: "Add-to-cart silently fails on mobile",
+      category: "JavaScript Error" as const,
+      severity: "critical" as const,
+      location: "/products/classic-kit on mobile viewport",
+      evidence: "Uncaught TypeError: addToCart is not a function",
+      quick_fix: "Restore the missing addToCart handler binding in cart.js",
+    },
+  ],
   tech_stack: {
     apps: ["Klaviyo", "Rebuy"],
     payment_providers: ["Shopify Payments"],
@@ -134,6 +144,30 @@ describe("fetchAudit", () => {
     });
     expect(audit.findings).toHaveLength(1);
     expect(audit.findings[0].title).toBe("Missing cart upsell");
+    expect(audit.bugs).toHaveLength(1);
+    expect(audit.bugs[0].severity).toBe("critical");
+    expect(audit.bugs[0].quick_fix).toContain("addToCart");
+  });
+
+  it("defaults bugs to empty array when JSON omits the field", async () => {
+    const client = getNotionClient();
+    client.pages.retrieve.mockResolvedValue(mockPageProperties);
+    const bodyWithoutBugs = { ...mockBodyJson };
+    delete (bodyWithoutBugs as { bugs?: unknown }).bugs;
+    client.blocks.children.list.mockResolvedValue({
+      results: [
+        {
+          type: "code",
+          code: {
+            language: "json",
+            rich_text: [{ plain_text: JSON.stringify(bodyWithoutBugs) }],
+          },
+        },
+      ],
+    });
+
+    const result = await fetchAudit(MOCK_PAGE_ID);
+    expect(result?.bugs).toEqual([]);
   });
 
   it("returns null for unpublished audits", async () => {
