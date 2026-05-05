@@ -19,12 +19,22 @@ export interface CoreWebVitals {
   pdp: CoreWebVitalMetrics;
 }
 
+export type Platform =
+  | "Shopify"
+  | "Shopify (Hydrogen)"
+  | "WooCommerce"
+  | "Magento"
+  | "BigCommerce"
+  | "Custom"
+  | "Other";
+
 export interface TechStack {
   theme: string;
   apps: string[];
   checkout_type: string;
   payment_providers: string[];
   analytics: string[];
+  platform?: Platform;
 }
 
 export type FindingTheme =
@@ -47,8 +57,9 @@ export interface Finding {
   business_impact: number;
   user_impact: number;
   effort_to_fix: number;
-  plus_feature: string;
-  plus_feature_link: string;
+  plus_feature: string | null;
+  plus_feature_link: string | null;
+  shopify_solution?: string | null;
   screenshot_url?: string;
   evidence: string[];
 }
@@ -74,6 +85,7 @@ export interface Bug {
   location: string;
   evidence: string;
   quick_fix: string;
+  shopify_solution?: string | null;
   screenshot_url?: string;
 }
 

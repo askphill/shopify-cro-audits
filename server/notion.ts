@@ -95,6 +95,9 @@ async function buildAudit(page: NotionPage): Promise<CroAudit | null> {
   }
 
   const logoUrl = (props["Logo URL"] as { url?: string })?.url;
+  const platform = (props["Platform"] as { select?: { name: string } })?.select?.name as
+    | import("../src/types/audit").Platform
+    | undefined;
 
   return {
     id: page.id,
@@ -117,6 +120,7 @@ async function buildAudit(page: NotionPage): Promise<CroAudit | null> {
       apps: bodyData.tech_stack.apps,
       payment_providers: bodyData.tech_stack.payment_providers,
       analytics: bodyData.tech_stack.analytics,
+      platform,
     },
     findings: bodyData.findings,
     bugs: bodyData.bugs ?? [],

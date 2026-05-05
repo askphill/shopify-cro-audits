@@ -62,6 +62,15 @@ export function FindingCard({
               </ul>
             )}
 
+            {finding.shopify_solution && (
+              <p
+                data-testid="shopify-solution"
+                className="text-sm italic text-ap-greyDark mb-4"
+              >
+                {finding.shopify_solution}
+              </p>
+            )}
+
             <div className="flex flex-wrap gap-6 mt-4 pt-4 border-t border-ap-brown/10">
               <StarRating
                 value={finding.business_impact}

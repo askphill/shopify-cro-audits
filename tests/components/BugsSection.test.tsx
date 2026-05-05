@@ -103,4 +103,28 @@ describe("BugsSection", () => {
       screen.getByText(/Add canonical tag pointing to the bare collection URL/i)
     ).toBeDefined();
   });
+
+  it("renders the shopify_solution line when present", () => {
+    render(
+      <BugsSection
+        bugs={[
+          makeBug({
+            severity: "critical",
+            shopify_solution:
+              "Shopify-hosted assets serve over HTTPS by default; this class of bug doesn't occur on Shopify.",
+          }),
+        ]}
+      />
+    );
+    expect(
+      screen.getByText(
+        /Shopify-hosted assets serve over HTTPS by default/i
+      )
+    ).toBeDefined();
+  });
+
+  it("omits the shopify_solution line when null/absent", () => {
+    render(<BugsSection bugs={[makeBug({ severity: "critical" })]} />);
+    expect(screen.queryByTestId("shopify-solution")).toBeNull();
+  });
 });

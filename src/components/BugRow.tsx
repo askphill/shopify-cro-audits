@@ -35,6 +35,15 @@ export function BugRow({ bug }: BugRowProps) {
         {bug.quick_fix}
       </p>
 
+      {bug.shopify_solution && (
+        <p
+          data-testid="shopify-solution"
+          className="text-xs italic text-ap-greyDark"
+        >
+          {bug.shopify_solution}
+        </p>
+      )}
+
       {bug.screenshot_url && (
         <img
           src={bug.screenshot_url}

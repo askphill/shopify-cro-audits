@@ -5,7 +5,12 @@ The shared language for the Shopify CRO Audit product. Update inline when terms 
 ## Glossary
 
 ### Audit
-A single CRO report for one Shopify merchant, produced by the `shopify-plus-cro-audit` skill and published via the Notion-backed web app. An audit contains exactly one `Findings` list, one `Bugs` list, Lighthouse scores, Core Web Vitals, and tech-stack data.
+A single CRO report for one merchant, produced by the `shopify-cro-audit` skill and published via the Notion-backed web app. An audit contains exactly one `Findings` list, one `Bugs` list, Lighthouse scores, Core Web Vitals, and tech-stack data. The merchant may be on Shopify (default) or on a non-Shopify platform (see `Audit Mode`).
+
+### Audit Mode
+The audit runs in one of two modes, decided early in Phase 1:
+- **Shopify mode** (default) — site detected as running on Shopify. Plus features are called out where genuinely relevant. Existing flow unchanged.
+- **Non-Shopify mode** — site is on WooCommerce, Magento, BigCommerce, custom, etc. The audit still runs end-to-end (Findings, Bugs, Lighthouse, Quick Wins). Framing shifts: instead of recommending Plus features, findings/bugs that *would be solved natively by Shopify* carry a subtle "on Shopify, this is X" line. Not a migration sales pitch — woven into existing finding/bug copy.
 
 ### Finding
 A **CRO opportunity** — a subjective, strategic recommendation scored on business impact, user impact, and effort (each 1-5). May tie to a Shopify Plus feature. The audit contains exactly 10 Findings, with the first 3 being Quick Wins. Findings are about *what could be better*, not *what is broken*.
@@ -41,3 +46,9 @@ An issue lives in exactly one section. If it passes the Bug test (*dev fix witho
 
 ### Quick Win
 The first 3 Findings in an audit — issues the merchant can ship in hours-to-days using their existing stack. Effort ≤ 2/5, business impact ≥ 3/5, no Plus upgrade required. Quick Wins are still Findings (CRO opportunities), distinct from Bugs (defects).
+
+### Platform
+The detected ecommerce platform of the audited site, captured during Phase 1a. Stored as a Notion property (Select: `Shopify`, `Shopify (Hydrogen)`, `WooCommerce`, `Magento`, `BigCommerce`, `Custom`, `Other`). Determines the Audit Mode: anything Shopify → Shopify mode; anything else → Non-Shopify mode. Hydrogen / headless Shopify is treated as Shopify mode. Detection runs on first page load via `evaluate_script` and proceeds silently when confidence is high; on low/unknown confidence the skill confirms with Ben before continuing.
+
+### Shopify Solution (Finding / Bug)
+Optional, nullable field on each Finding and Bug, populated **only in Non-Shopify mode**. A single short sentence pointing to how Shopify natively handles this issue — e.g., *"Shopify-hosted assets are HTTPS by default; this class of bug doesn't occur on Shopify."* Renders in the web app as a distinct, subdued line below the finding/bug body (separate visual treatment from the main copy, not folded in). Set to `null` whenever there's no clean Shopify tie-in — most findings/bugs will not have one. Mutually exclusive with `plus_feature` (Plus features are Shopify-mode only).

@@ -141,6 +141,7 @@ describe("fetchAudit", () => {
       apps: ["Klaviyo", "Rebuy"],
       payment_providers: ["Shopify Payments"],
       analytics: ["GA4"],
+      platform: undefined,
     });
     expect(audit.findings).toHaveLength(1);
     expect(audit.findings[0].title).toBe("Missing cart upsell");
@@ -224,5 +225,60 @@ describe("fetchAudit", () => {
 
     const result = await fetchAudit("nonexistent-store");
     expect(result).toBeNull();
+  });
+
+  it("reads the Platform select property into tech_stack.platform", async () => {
+    const client = getNotionClient();
+    const withPlatform = {
+      ...mockPageProperties,
+      properties: {
+        ...mockPageProperties.properties,
+        Platform: { type: "select", select: { name: "WooCommerce" } },
+      },
+    };
+    client.pages.retrieve.mockResolvedValue(withPlatform);
+    client.blocks.children.list.mockResolvedValue(mockBlocksResponse);
+
+    const result = await fetchAudit(MOCK_PAGE_ID);
+    expect(result?.tech_stack.platform).toBe("WooCommerce");
+  });
+
+  it("passes shopify_solution through on findings and bugs", async () => {
+    const client = getNotionClient();
+    const bodyWithSolutions = {
+      ...mockBodyJson,
+      findings: [
+        {
+          ...mockBodyJson.findings[0],
+          plus_feature: null,
+          plus_feature_link: null,
+          shopify_solution:
+            "Shopify's CDN serves responsive WebP variants automatically.",
+        },
+      ],
+      bugs: [
+        {
+          ...mockBodyJson.bugs[0],
+          shopify_solution:
+            "Shopify-hosted assets serve over HTTPS by default; this class of bug doesn't occur on Shopify.",
+        },
+      ],
+    };
+    client.pages.retrieve.mockResolvedValue(mockPageProperties);
+    client.blocks.children.list.mockResolvedValue({
+      results: [
+        {
+          type: "code",
+          code: {
+            language: "json",
+            rich_text: [{ plain_text: JSON.stringify(bodyWithSolutions) }],
+          },
+        },
+      ],
+    });
+
+    const result = await fetchAudit(MOCK_PAGE_ID);
+    expect(result?.findings[0].shopify_solution).toContain("WebP");
+    expect(result?.bugs[0].shopify_solution).toContain("HTTPS");
   });
 });
