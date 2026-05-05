@@ -203,7 +203,7 @@ describe("fetchAudit", () => {
     expect(result).toBeNull();
   });
 
-  it("resolves a slug to a page via database query", async () => {
+  it("resolves a slug to a page via database query, filtering by Published status", async () => {
     const client = getNotionClient();
     client.dataSources.query.mockResolvedValue({ results: [mockPageProperties] });
     client.blocks.children.list.mockResolvedValue(mockBlocksResponse);
@@ -212,7 +212,12 @@ describe("fetchAudit", () => {
 
     expect(client.dataSources.query).toHaveBeenCalledWith(
       expect.objectContaining({
-        filter: { property: "Slug", rich_text: { equals: "braadbaas" } },
+        filter: {
+          and: [
+            { property: "Slug", rich_text: { equals: "braadbaas" } },
+            { property: "Status", select: { equals: "Published" } },
+          ],
+        },
       })
     );
     expect(result).not.toBeNull();

@@ -43,8 +43,10 @@ async function fetchAuditBySlug(slug: string): Promise<CroAudit | null> {
     const response = (await notion.dataSources.query({
       data_source_id: DATA_SOURCE_ID,
       filter: {
-        property: "Slug",
-        rich_text: { equals: slug },
+        and: [
+          { property: "Slug", rich_text: { equals: slug } },
+          { property: "Status", select: { equals: "Published" } },
+        ],
       },
       page_size: 1,
     })) as { results: Array<NotionPage> };
